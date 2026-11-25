@@ -1,0 +1,516 @@
+{
+ "stage": "building_visual.usda",
+ "visual_layer": "layers/visual/visual.usdc",
+ "dominant_wall_yaw_deg": 57.5,
+ "slots": [
+  {
+   "area": "area_01",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_01_wall",
+   "shader": "/World/Visual/Looks/slot_area_01_wall/Shader",
+   "srgb": [
+    185,
+    187,
+    178
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_01",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_01_floor",
+   "shader": "/World/Visual/Looks/slot_area_01_floor/Shader",
+   "srgb": [
+    133,
+    96,
+    72
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_01",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_01_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_01_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_02",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_02_wall",
+   "shader": "/World/Visual/Looks/slot_area_02_wall/Shader",
+   "srgb": [
+    158,
+    142,
+    129
+   ],
+   "filmed_by": "IMG_4476"
+  },
+  {
+   "area": "area_02",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_02_floor",
+   "shader": "/World/Visual/Looks/slot_area_02_floor/Shader",
+   "srgb": [
+    67,
+    81,
+    71
+   ],
+   "filmed_by": "IMG_4476"
+  },
+  {
+   "area": "area_02",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_02_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_02_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": "IMG_4476"
+  },
+  {
+   "area": "area_03",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_03_wall",
+   "shader": "/World/Visual/Looks/slot_area_03_wall/Shader",
+   "srgb": [
+    121,
+    115,
+    98
+   ],
+   "filmed_by": "IMG_4475"
+  },
+  {
+   "area": "area_03",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_03_floor",
+   "shader": "/World/Visual/Looks/slot_area_03_floor/Shader",
+   "srgb": [
+    132,
+    44,
+    53
+   ],
+   "filmed_by": "IMG_4475"
+  },
+  {
+   "area": "area_03",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_03_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_03_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": "IMG_4475"
+  },
+  {
+   "area": "area_04",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_04_wall",
+   "shader": "/World/Visual/Looks/slot_area_04_wall/Shader",
+   "srgb": [
+    210,
+    190,
+    172
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_04",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_04_floor",
+   "shader": "/World/Visual/Looks/slot_area_04_floor/Shader",
+   "srgb": [
+    144,
+    132,
+    110
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_04",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_04_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_04_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_05",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_05_wall",
+   "shader": "/World/Visual/Looks/slot_area_05_wall/Shader",
+   "srgb": [
+    152,
+    154,
+    136
+   ],
+   "filmed_by": "IMG_4475"
+  },
+  {
+   "area": "area_05",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_05_floor",
+   "shader": "/World/Visual/Looks/slot_area_05_floor/Shader",
+   "srgb": [
+    137,
+    37,
+    56
+   ],
+   "filmed_by": "IMG_4475"
+  },
+  {
+   "area": "area_05",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_05_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_05_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": "IMG_4475"
+  },
+  {
+   "area": "area_06",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_06_wall",
+   "shader": "/World/Visual/Looks/slot_area_06_wall/Shader",
+   "srgb": [
+    109,
+    95,
+    77
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_06",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_06_floor",
+   "shader": "/World/Visual/Looks/slot_area_06_floor/Shader",
+   "srgb": [
+    90,
+    80,
+    66
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_06",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_06_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_06_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_07",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_07_wall",
+   "shader": "/World/Visual/Looks/slot_area_07_wall/Shader",
+   "srgb": [
+    160,
+    153,
+    138
+   ],
+   "filmed_by": "IMG_4478"
+  },
+  {
+   "area": "area_07",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_07_floor",
+   "shader": "/World/Visual/Looks/slot_area_07_floor/Shader",
+   "srgb": [
+    95,
+    68,
+    44
+   ],
+   "filmed_by": "IMG_4478"
+  },
+  {
+   "area": "area_07",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_07_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_07_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": "IMG_4478"
+  },
+  {
+   "area": "area_08",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_08_wall",
+   "shader": "/World/Visual/Looks/slot_area_08_wall/Shader",
+   "srgb": [
+    188,
+    172,
+    149
+   ],
+   "filmed_by": "IMG_4478"
+  },
+  {
+   "area": "area_08",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_08_floor",
+   "shader": "/World/Visual/Looks/slot_area_08_floor/Shader",
+   "srgb": [
+    161,
+    112,
+    75
+   ],
+   "filmed_by": "IMG_4478"
+  },
+  {
+   "area": "area_08",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_08_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_08_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": "IMG_4478"
+  },
+  {
+   "area": "area_09",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_09_wall",
+   "shader": "/World/Visual/Looks/slot_area_09_wall/Shader",
+   "srgb": [
+    191,
+    175,
+    150
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_09",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_09_floor",
+   "shader": "/World/Visual/Looks/slot_area_09_floor/Shader",
+   "srgb": [
+    155,
+    124,
+    91
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_09",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_09_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_09_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": null
+  },
+  {
+   "area": "area_10",
+   "kind": "wall",
+   "material": "/World/Visual/Looks/slot_area_10_wall",
+   "shader": "/World/Visual/Looks/slot_area_10_wall/Shader",
+   "srgb": [
+    126,
+    108,
+    85
+   ],
+   "filmed_by": "IMG_4478"
+  },
+  {
+   "area": "area_10",
+   "kind": "floor",
+   "material": "/World/Visual/Looks/slot_area_10_floor",
+   "shader": "/World/Visual/Looks/slot_area_10_floor/Shader",
+   "srgb": [
+    80,
+    38,
+    19
+   ],
+   "filmed_by": "IMG_4478"
+  },
+  {
+   "area": "area_10",
+   "kind": "ceiling",
+   "material": "/World/Visual/Looks/slot_area_10_ceiling",
+   "shader": "/World/Visual/Looks/slot_area_10_ceiling/Shader",
+   "srgb": [
+    240,
+    238,
+    232
+   ],
+   "filmed_by": "IMG_4478"
+  }
+ ],
+ "scan_looks": [
+  {
+   "part": "addition_103223",
+   "shader": "/World/Visual/Looks/scan_addition_103223/Shader"
+  },
+  {
+   "part": "primary_102526",
+   "shader": "/World/Visual/Looks/scan_primary_102526/Shader"
+  }
+ ],
+ "filmed": [
+  {
+   "clip": "IMG_4475",
+   "faces": 513235,
+   "areas": [
+    "area_05",
+    "area_03"
+   ],
+   "owned_m2": 35.9
+  },
+  {
+   "clip": "IMG_4476",
+   "faces": 423529,
+   "areas": [
+    "area_02",
+    "area_03"
+   ],
+   "owned_m2": 57.2
+  },
+  {
+   "clip": "IMG_4478",
+   "faces": 459427,
+   "areas": [
+    "area_08",
+    "area_07",
+    "area_10",
+    "area_05",
+    "area_06"
+   ],
+   "owned_m2": 64.5
+  }
+ ],
+ "lights": [
+  {
+   "path": "/World/Visual/Lights/lamp_area_01_0",
+   "area": "area_01",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_02_1",
+   "area": "area_02",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_02_2",
+   "area": "area_02",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_02_3",
+   "area": "area_02",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_03_4",
+   "area": "area_03",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_04_5",
+   "area": "area_04",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_05_6",
+   "area": "area_05",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_05_7",
+   "area": "area_05",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_05_8",
+   "area": "area_05",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_05_9",
+   "area": "area_05",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_06_10",
+   "area": "area_06",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_07_11",
+   "area": "area_07",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_07_12",
+   "area": "area_07",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_08_13",
+   "area": "area_08",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_08_14",
+   "area": "area_08",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_09_15",
+   "area": "area_09",
+   "intensity": 20000.0
+  },
+  {
+   "path": "/World/Visual/Lights/lamp_area_10_16",
+   "area": "area_10",
+   "intensity": 20000.0
+  }
+ ],
+ "dome": {
+  "path": "/World/Visual/Lights/dome",
+  "intensity": 150.0
+ },
+ "light_temperature_k": 4000.0,
+ "stats": {
+  "scan_faces": 664439,
+  "scan_hidden": {
+   "IMG_4475": 85349,
+   "IMG_4478": 108885,
+   "IMG_4476": 110104
+  },
+  "scan_kept_in_filmed": 50248,
+  "scan_by_class": [
+   111036,
+   51126,
+   129,
+   197810
+  ]
+ }
+}

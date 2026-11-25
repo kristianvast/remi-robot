@@ -1,0 +1,239 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.3.2"
+    }
+    defaultPrim = "elegoo_smart_robot_car_v4"
+    endTimeCode = 1000000
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    startTimeCode = 0
+    upAxis = "Z"
+)
+
+over "elegoo_smart_robot_car_v4"
+{
+    over "Geometry"
+    {
+        over "base_footprint" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsArticulationRootAPI", "NewtonArticulationRootAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+        )
+        {
+            double[] newton:inertia = [0.001191, 0.003072, 0.003681, 0, 0, 0]
+            bool newton:selfCollisionEnabled = 0
+            point3f physics:centerOfMass = (-0.0055, 0, 0.04705)
+            float3 physics:diagonalInertia = (0.001191, 0.003072, 0.003681)
+            float physics:mass = 0.62
+            quatf physics:principalAxes = (1, 0, 0, 0)
+
+            over "front_left_wheel" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.000009968, 0.00001663, 0.000009968, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.000009968, 0.000009968, 0.00001663)
+                float physics:mass = 0.03
+                quatf physics:principalAxes = (-0.70710677, 0.70710677, 0, 0)
+
+                over "cylinder" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "front_right_wheel" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.000009968, 0.00001663, 0.000009968, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.000009968, 0.000009968, 0.00001663)
+                float physics:mass = 0.03
+                quatf physics:principalAxes = (-0.70710677, 0.70710677, 0, 0)
+
+                over "cylinder" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "rear_left_wheel" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.000009968, 0.00001663, 0.000009968, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.000009968, 0.000009968, 0.00001663)
+                float physics:mass = 0.03
+                quatf physics:principalAxes = (-0.70710677, 0.70710677, 0, 0)
+
+                over "cylinder" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "rear_right_wheel" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.000009968, 0.00001663, 0.000009968, 0, 0, 0]
+                point3f physics:centerOfMass = (0, 0, 0)
+                float3 physics:diagonalInertia = (0.000009968, 0.000009968, 0.00001663)
+                float physics:mass = 0.03
+                quatf physics:principalAxes = (-0.70710677, 0.70710677, 0, 0)
+
+                over "cylinder" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "sensor_pan" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "NewtonMassAPI"]
+            )
+            {
+                double[] newton:inertia = [0.00001154, 0.00001025, 0.00000929, 0, 0, 0]
+                point3f physics:centerOfMass = (0.0042, 0, 0.028)
+                float3 physics:diagonalInertia = (0.00000929, 0.00001025, 0.00001154)
+                float physics:mass = 0.03
+                quatf physics:principalAxes = (-0.70710677, 0, 0.70710677, 0)
+
+                over "box_2" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "box_1" (
+                prepend apiSchemas = ["NewtonCollisionAPI"]
+            )
+            {
+            }
+
+            over "box_2" (
+                prepend apiSchemas = ["NewtonCollisionAPI"]
+            )
+            {
+            }
+
+            over "box_3" (
+                prepend apiSchemas = ["NewtonCollisionAPI"]
+            )
+            {
+            }
+        }
+    }
+
+    over "Physics"
+    {
+        def PhysicsRevoluteJoint "front_left_wheel_joint" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0
+            float drive:angular:physics:maxForce = 0.1
+            float drive:angular:physics:stiffness = 0
+            float newton:velocityLimit = 1203.2114
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </elegoo_smart_robot_car_v4/Geometry/base_footprint>
+            custom rel physics:body1
+            append rel physics:body1 = </elegoo_smart_robot_car_v4/Geometry/base_footprint/front_left_wheel>
+            point3f physics:localPos0 = (0.0409, 0.058, 0.0333)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 0.1
+        }
+
+        def PhysicsRevoluteJoint "front_right_wheel_joint" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0
+            float drive:angular:physics:maxForce = 0.1
+            float drive:angular:physics:stiffness = 0
+            float newton:velocityLimit = 1203.2114
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </elegoo_smart_robot_car_v4/Geometry/base_footprint>
+            custom rel physics:body1
+            append rel physics:body1 = </elegoo_smart_robot_car_v4/Geometry/base_footprint/front_right_wheel>
+            point3f physics:localPos0 = (0.0409, -0.058, 0.0333)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 0.1
+        }
+
+        def PhysicsRevoluteJoint "rear_left_wheel_joint" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0
+            float drive:angular:physics:maxForce = 0.1
+            float drive:angular:physics:stiffness = 0
+            float newton:velocityLimit = 1203.2114
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </elegoo_smart_robot_car_v4/Geometry/base_footprint>
+            custom rel physics:body1
+            append rel physics:body1 = </elegoo_smart_robot_car_v4/Geometry/base_footprint/rear_left_wheel>
+            point3f physics:localPos0 = (-0.0409, 0.058, 0.0333)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 0.1
+        }
+
+        def PhysicsRevoluteJoint "rear_right_wheel_joint" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0
+            float drive:angular:physics:maxForce = 0.1
+            float drive:angular:physics:stiffness = 0
+            float newton:velocityLimit = 1203.2114
+            uniform token physics:axis = "Y"
+            custom rel physics:body0
+            append rel physics:body0 = </elegoo_smart_robot_car_v4/Geometry/base_footprint>
+            custom rel physics:body1
+            append rel physics:body1 = </elegoo_smart_robot_car_v4/Geometry/base_footprint/rear_right_wheel>
+            point3f physics:localPos0 = (-0.0409, -0.058, 0.0333)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 0.1
+        }
+
+        def PhysicsRevoluteJoint "sensor_pan_joint" (
+            prepend apiSchemas = ["NewtonJointAPI", "PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0
+            float drive:angular:physics:maxForce = 0.18
+            float drive:angular:physics:stiffness = 0
+            float newton:velocityLimit = 297.93805
+            uniform token physics:axis = "Z"
+            custom rel physics:body0
+            append rel physics:body0 = </elegoo_smart_robot_car_v4/Geometry/base_footprint>
+            custom rel physics:body1
+            append rel physics:body1 = </elegoo_smart_robot_car_v4/Geometry/base_footprint/sensor_pan>
+            point3f physics:localPos0 = (0.0853, 0, 0.07905)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            float physics:lowerLimit = -90.00021
+            float physics:upperLimit = 90.00021
+            custom float urdf:limit:effort = 0.18
+        }
+    }
+}
+

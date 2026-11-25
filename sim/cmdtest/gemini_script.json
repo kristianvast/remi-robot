@@ -1,0 +1,1384 @@
+{
+ "recorded_utc": "2026-11-24T20:18:28+00:00",
+ "recorded_how": "rebuilt from the recording run's log",
+ "model": "gemini-3.8-live",
+ "location": "us-central1",
+ "project": "your-gcp-project",
+ "source": "car/tools/brain/agent.py (make_session, INSTRUCTIONS, CarAgent tools)",
+ "tool_declarations": [
+  {
+   "description": "Back up straight. There is no sensor behind, so keep it short.\n",
+   "name": "drive_back",
+   "parameters": {
+    "properties": {
+     "centimeters": {
+      "description": "distance to back up, 5 to 40.",
+      "type": "INTEGER"
+     }
+    },
+    "property_ordering": [
+     "centimeters"
+    ],
+    "required": [
+     "centimeters"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Drive straight forward, smoothly. Slows down and stops early if something is in the way.\n",
+   "name": "drive_forward",
+   "parameters": {
+    "properties": {
+     "centimeters": {
+      "description": "distance to drive, 5 to 300.",
+      "type": "INTEGER"
+     }
+    },
+    "property_ordering": [
+     "centimeters"
+    ],
+    "required": [
+     "centimeters"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Roam without a specific goal, avoiding obstacles.\n\nReturns at once while the car keeps driving. You are told when it ends.",
+   "name": "explore",
+   "parameters": {
+    "properties": {
+     "seconds": {
+      "description": "how long to explore, 10 to 120.",
+      "type": "INTEGER"
+     }
+    },
+    "property_ordering": [
+     "seconds"
+    ],
+    "required": [
+     "seconds"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Search for a named visible object, then approach safely and report.\n",
+   "name": "find_object",
+   "parameters": {
+    "properties": {
+     "name": {
+      "description": "concise visual name of a physical object, not a named place.",
+      "type": "STRING"
+     }
+    },
+    "property_ordering": [
+     "name"
+    ],
+    "required": [
+     "name"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Follow a visible person, keeping roughly distance_cm away, and report if lost.\n",
+   "name": "follow_person",
+   "parameters": {
+    "properties": {
+     "distance_cm": {
+      "description": "desired separation, 65 to 120 cm.",
+      "type": "INTEGER"
+     }
+    },
+    "property_ordering": [
+     "distance_cm"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Drive by yourself to a named place in the house, such as the kitchen, or home.\n\nReturns at once while the car drives. You are told when it ends.",
+   "name": "go_to",
+   "parameters": {
+    "properties": {
+     "place": {
+      "description": "the place the person named, for example \"kitchen\" or \"home\".",
+      "type": "STRING"
+     },
+     "start_room": {
+      "description": "the room you are in now, only if the person said so or you were carried or driven by\nhand since your last trip. Leave empty to start from home, or from where your last trip ended.",
+      "type": "STRING"
+     }
+    },
+    "property_ordering": [
+     "place",
+     "start_room"
+    ],
+    "required": [
+     "place"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Pan only the head (camera and distance sensor); the car stays still.\n",
+   "name": "look_direction",
+   "parameters": {
+    "properties": {
+     "direction": {
+      "description": "where to point the head, from the car's point of view.",
+      "enum": [
+       "left",
+       "right",
+       "forward"
+      ],
+      "type": "STRING"
+     },
+     "degrees": {
+      "description": "how far from straight ahead, 10 to 80. Ignored for forward.",
+      "type": "INTEGER"
+     }
+    },
+    "property_ordering": [
+     "direction",
+     "degrees"
+    ],
+    "required": [
+     "direction"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Roam, save pictures, and report when done.\n",
+   "name": "patrol",
+   "parameters": {
+    "properties": {
+     "seconds": {
+      "description": "desired duration, 10 to 120 seconds.",
+      "type": "INTEGER"
+     }
+    },
+    "property_ordering": [
+     "seconds"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Sweep the head left to right and measure free space in each direction, in cm.",
+   "name": "scan_distances",
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Remember the spot you are on as home, when the owner says this is home.\n\nUnless you just arrived here with go_to, you look around and turn once on the spot to find where you are.",
+   "name": "set_home",
+   "parameters": {
+    "properties": {
+     "room": {
+      "description": "the room you are in, if the owner said it. Needed unless you just arrived here with go_to.",
+      "type": "STRING"
+     }
+    },
+    "property_ordering": [
+     "room"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Stop all motion immediately.",
+   "name": "stop",
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Check the current or most recent task without ending it.",
+   "name": "task_status",
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Spin the whole car in place.\n",
+   "name": "turn",
+   "parameters": {
+    "properties": {
+     "direction": {
+      "description": "which way to spin, from the car's point of view.",
+      "enum": [
+       "left",
+       "right"
+      ],
+      "type": "STRING"
+     },
+     "degrees": {
+      "description": "how far to spin, 5 to 180.",
+      "type": "INTEGER"
+     }
+    },
+    "property_ordering": [
+     "direction",
+     "degrees"
+    ],
+    "required": [
+     "direction",
+     "degrees"
+    ],
+    "type": "OBJECT"
+   },
+   "behavior": "BLOCKING"
+  },
+  {
+   "description": "Your best guess of where you are in the house, and how sure you are. Does not move.",
+   "name": "where_am_i",
+   "behavior": "BLOCKING"
+  }
+ ],
+ "note": "Text in, no camera frames, no car; every tool answered at once with a stub. Fixed: replayed, never regenerated.",
+ "requests": [
+  {
+   "id": "goto_kitchen",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Go to the kitchen.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "kitchen"
+       },
+       "stub_result": "Started going to the kitchen. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_dining",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Can you drive to the dining room?",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "dining room"
+       },
+       "stub_result": "Started going to the dining room. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_office",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Please go to the office.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "office"
+       },
+       "stub_result": "Started going to the office. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_west_corridor",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Drive to the west corridor.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "west corridor"
+       },
+       "stub_result": "Started going to the west corridor. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_meeting",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Go to the meeting room please.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "meeting room"
+       },
+       "stub_result": "Started going to the meeting room. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_middle_corridor",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Head over to the middle corridor.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "middle corridor"
+       },
+       "stub_result": "Started going to the middle corridor. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_lounge",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Take yourself to the lounge.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "lounge"
+       },
+       "stub_result": "Started going to the lounge. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_back_hall",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Go to the back hall.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "back hall"
+       },
+       "stub_result": "Started going to the back hall. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_stair_hall",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Drive over to the stair hall.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "stair hall"
+       },
+       "stub_result": "Started going to the stair hall. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_store_room",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Go to the store room.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "store room"
+       },
+       "stub_result": "Started going to the store room. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "go_home",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Go home.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "home"
+       },
+       "stub_result": "Started going home. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "goto_then_home",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Go to the middle corridor.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "middle corridor"
+       },
+       "stub_result": "Started going to the middle corridor. I assume I start from home."
+      }
+     ],
+     "reply": null
+    },
+    {
+     "text": "Now come back home.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "home",
+        "start_room": "middle corridor"
+       },
+       "stub_result": "Started going home. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to",
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "fwd_1m",
+   "kind": "drive_forward",
+   "turns": [
+    {
+     "text": "Drive forward one metre.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 100
+       },
+       "stub_result": "Drove forward about 100 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "fwd_50cm",
+   "kind": "drive_forward",
+   "turns": [
+    {
+     "text": "Move forward 50 centimetres.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 50
+       },
+       "stub_result": "Drove forward about 50 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "fwd_bit",
+   "kind": "drive_forward",
+   "turns": [
+    {
+     "text": "Go forward a bit.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 50
+       },
+       "stub_result": "Drove forward about 50 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "fwd_2m",
+   "kind": "drive_forward",
+   "turns": [
+    {
+     "text": "Drive straight ahead two metres.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 200
+       },
+       "stub_result": "Drove forward about 200 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "fwd_little",
+   "kind": "drive_forward",
+   "turns": [
+    {
+     "text": "Inch forward a little.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 15
+       },
+       "stub_result": "Drove forward about 15 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "fwd_20cm",
+   "kind": "drive_forward",
+   "turns": [
+    {
+     "text": "Drive forward 20 cm.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 20
+       },
+       "stub_result": "Drove forward about 20 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "back_30cm",
+   "kind": "drive_back",
+   "turns": [
+    {
+     "text": "Back up 30 centimetres.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_back",
+       "args": {
+        "centimeters": 30
+       },
+       "stub_result": "Backed up about 30 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_back"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "back_bit",
+   "kind": "drive_back",
+   "turns": [
+    {
+     "text": "Reverse a bit.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_back",
+       "args": {
+        "centimeters": 20
+       },
+       "stub_result": "Backed up about 20 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_back"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "back_10cm",
+   "kind": "drive_back",
+   "turns": [
+    {
+     "text": "Drive backwards 10 cm.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_back",
+       "args": {
+        "centimeters": 10
+       },
+       "stub_result": "Backed up about 10 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_back"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "turn_left_90",
+   "kind": "turn",
+   "turns": [
+    {
+     "text": "Turn left 90 degrees.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "turn",
+       "args": {
+        "direction": "left",
+        "degrees": 90
+       },
+       "stub_result": "Turned 90 degrees left."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "turn"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "turn_right_45",
+   "kind": "turn",
+   "turns": [
+    {
+     "text": "Turn right 45 degrees.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "turn",
+       "args": {
+        "degrees": 45,
+        "direction": "right"
+       },
+       "stub_result": "Turned 45 degrees right."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "turn"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "turn_around",
+   "kind": "turn",
+   "turns": [
+    {
+     "text": "Turn around.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "turn",
+       "args": {
+        "degrees": 180,
+        "direction": "left"
+       },
+       "stub_result": "Turned 180 degrees left."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "turn"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "turn_left_bit",
+   "kind": "turn",
+   "turns": [
+    {
+     "text": "Turn left a little.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "turn",
+       "args": {
+        "direction": "left",
+        "degrees": 30
+       },
+       "stub_result": "Turned 30 degrees left."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "turn"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "turn_right_30",
+   "kind": "turn",
+   "turns": [
+    {
+     "text": "Turn 30 degrees to the right.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "turn",
+       "args": {
+        "degrees": 30,
+        "direction": "right"
+       },
+       "stub_result": "Turned 30 degrees right."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "turn"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "look_left",
+   "kind": "look_direction",
+   "turns": [
+    {
+     "text": "Look to your left.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "look_direction",
+       "args": {
+        "degrees": 60,
+        "direction": "left"
+       },
+       "stub_result": "Head turned 60 degrees left."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "look_direction"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "explore_30",
+   "kind": "explore",
+   "turns": [
+    {
+     "text": "Explore for 30 seconds.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "explore",
+       "args": {
+        "seconds": 30
+       },
+       "stub_result": "Started exploring for 30 seconds."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "explore"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "explore_wander",
+   "kind": "explore",
+   "turns": [
+    {
+     "text": "Wander around for 20 seconds.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "explore",
+       "args": {
+        "seconds": 20
+       },
+       "stub_result": "Started exploring for 20 seconds."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "explore"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "patrol_60",
+   "kind": "patrol",
+   "turns": [
+    {
+     "text": "Patrol for a minute.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "patrol",
+       "args": {
+        "seconds": 60
+       },
+       "stub_result": "Started a 60 second patrol."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "patrol"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "patrol_30",
+   "kind": "patrol",
+   "turns": [
+    {
+     "text": "Do a 30 second patrol.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "patrol",
+       "args": {
+        "seconds": 30
+       },
+       "stub_result": "Started a 30 second patrol."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "patrol"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "stop_fwd",
+   "kind": "stop",
+   "turns": [
+    {
+     "text": "Drive forward three metres.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 300
+       },
+       "stub_result": "Drove forward about 300 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    },
+    {
+     "text": "Stop!",
+     "after_s": 1.5,
+     "calls": [
+      {
+       "name": "stop",
+       "args": {},
+       "stub_result": "Stopped: I was told to stop."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward",
+    "stop"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "stop_explore",
+   "kind": "stop",
+   "turns": [
+    {
+     "text": "Explore for a minute.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "explore",
+       "args": {
+        "seconds": 60
+       },
+       "stub_result": "Started exploring for 60 seconds."
+      }
+     ],
+     "reply": null
+    },
+    {
+     "text": "Stop.",
+     "after_s": 6.0,
+     "calls": [
+      {
+       "name": "stop",
+       "args": {},
+       "stub_result": "Stopped: I was told to stop."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "explore",
+    "stop"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "stop_goto",
+   "kind": "stop",
+   "turns": [
+    {
+     "text": "Go to the office.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "office"
+       },
+       "stub_result": "Started going to the office. I assume I start from home."
+      }
+     ],
+     "reply": null
+    },
+    {
+     "text": "Stop right there.",
+     "after_s": 10.0,
+     "calls": [
+      {
+       "name": "stop",
+       "args": {},
+       "stub_result": "Stopped: I was told to stop."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to",
+    "stop"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "two_turn_drive",
+   "kind": "two_step",
+   "turns": [
+    {
+     "text": "Turn around and drive a metre.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "turn",
+       "args": {
+        "degrees": 180,
+        "direction": "right"
+       },
+       "stub_result": "Turned 180 degrees right."
+      },
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 100
+       },
+       "stub_result": "Drove forward about 100 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "turn",
+    "drive_forward"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "two_fwd_turn",
+   "kind": "two_step",
+   "turns": [
+    {
+     "text": "Drive forward half a metre and then turn left.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 50
+       },
+       "stub_result": "Drove forward about 50 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward",
+    "turn"
+   ],
+   "gemini_matches_request": false
+  },
+  {
+   "id": "two_right_fwd",
+   "kind": "two_step",
+   "turns": [
+    {
+     "text": "Turn right 90 degrees, then go forward one metre.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "turn",
+       "args": {
+        "degrees": 90,
+        "direction": "right"
+       },
+       "stub_result": "Turned 90 degrees right."
+      },
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 100
+       },
+       "stub_result": "Drove forward about 100 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "turn",
+    "drive_forward"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "two_back_turn",
+   "kind": "two_step",
+   "turns": [
+    {
+     "text": "Back up a bit and turn left 45 degrees.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_back",
+       "args": {
+        "centimeters": 20
+       },
+       "stub_result": "Backed up about 20 cm."
+      },
+      {
+       "name": "turn",
+       "args": {
+        "direction": "left",
+        "degrees": 45
+       },
+       "stub_result": "Turned 45 degrees left."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_back",
+    "turn"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "no_fwd_1m",
+   "kind": "drive_forward",
+   "turns": [
+    {
+     "text": "Kjør fram en meter.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 100
+       },
+       "stub_result": "Drove forward about 100 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "no_turn_left",
+   "kind": "turn",
+   "turns": [
+    {
+     "text": "Snu til venstre nitti grader.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "turn",
+       "args": {
+        "degrees": 90,
+        "direction": "left"
+       },
+       "stub_result": "Turned 90 degrees left."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "turn"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "no_goto_kitchen",
+   "kind": "go_to",
+   "turns": [
+    {
+     "text": "Gå til kjøkkenet.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "go_to",
+       "args": {
+        "place": "kitchen"
+       },
+       "stub_result": "Started going to the kitchen. I assume I start from home."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "go_to"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "no_back",
+   "kind": "drive_back",
+   "turns": [
+    {
+     "text": "Rygg litt.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_back",
+       "args": {
+        "centimeters": 15
+       },
+       "stub_result": "Backed up about 15 cm."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_back"
+   ],
+   "gemini_matches_request": true
+  },
+  {
+   "id": "no_stop",
+   "kind": "stop",
+   "turns": [
+    {
+     "text": "Kjør fremover to meter.",
+     "after_s": null,
+     "calls": [
+      {
+       "name": "drive_forward",
+       "args": {
+        "centimeters": 200
+       },
+       "stub_result": "Drove forward about 200 cm. Clear distance ahead is 140 cm."
+      }
+     ],
+     "reply": null
+    },
+    {
+     "text": "Stopp!",
+     "after_s": 1.5,
+     "calls": [
+      {
+       "name": "stop",
+       "args": {},
+       "stub_result": "Stopped: I was told to stop."
+      }
+     ],
+     "reply": null
+    }
+   ],
+   "expected_tools": [
+    "drive_forward",
+    "stop"
+   ],
+   "gemini_matches_request": true
+  }
+ ]
+}

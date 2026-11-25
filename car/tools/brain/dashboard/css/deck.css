@@ -1,0 +1,86 @@
+/* ---------- Main 3-Column Command Deck (1440x900 No-Scroll) ---------- */
+.deck {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(380px, 1.04fr) minmax(520px, 1.54fr) minmax(300px, 0.86fr);
+  gap: var(--gap);
+  padding: var(--gap) 12px 10px;
+  overflow: hidden;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  min-width: 0;
+  min-height: 0;
+}
+
+/* HUD Panel with crisp 1px borders and L-corner brackets */
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 8px 10px 9px;
+  background:
+    linear-gradient(var(--bracket), var(--bracket)) left top / 9px 1px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) left top / 1px 9px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) right top / 9px 1px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) right top / 1px 9px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) left bottom / 9px 1px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) left bottom / 1px 9px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) right bottom / 9px 1px no-repeat,
+    linear-gradient(var(--bracket), var(--bracket)) right bottom / 1px 9px no-repeat,
+    linear-gradient(180deg, rgba(9, 22, 37, 0.9), rgba(5, 13, 24, 0.94));
+  border: 1px solid var(--line);
+  animation: boot-in 0.35s ease-out both;
+}
+.col:nth-child(2) .panel { animation-delay: 0.05s; }
+.col:nth-child(3) .panel { animation-delay: 0.1s; }
+@keyframes boot-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-hd {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+  margin-bottom: 7px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--line-dim);
+}
+.panel-hd h2 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.panel-hd h2 .tag-code {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--accent);
+  opacity: 0.85;
+}
+.panel-hd .right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+

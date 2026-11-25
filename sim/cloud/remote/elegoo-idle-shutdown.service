@@ -1,0 +1,7 @@
+[Unit]
+Description=Power off when no GPU process has run for 45 minutes
+
+[Service]
+Type=oneshot
+Environment=IDLE_MINUTES=45
+ExecStart=/usr/local/bin/elegoo-idle-shutdown

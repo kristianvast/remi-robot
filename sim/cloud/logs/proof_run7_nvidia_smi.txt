@@ -1,0 +1,8 @@
+NVIDIA L4, 2 %, 4260 MiB
+14357, /opt/isaaclab-venv/bin/python, 4216 MiB
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A           14357    C+G   /opt/isaaclab-venv/bin/python          4216MiB |
++-----------------------------------------------------------------------------------------+

@@ -1,0 +1,3 @@
+#pragma once
+#define HOME_WIFI_SSID "YOUR_SSID"
+#define HOME_WIFI_PASSWORD "YOUR_PASSWORD"

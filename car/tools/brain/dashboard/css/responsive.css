@@ -1,0 +1,87 @@
+/* ---------- Responsive: Tablet & Mobile (390x844) ---------- */
+/* The top bar's chips and controls need about 1550 px in one row; below that it takes two. */
+@media (max-width: 1560px) {
+  .bar { height: auto; min-height: var(--bar-h); flex-wrap: wrap; row-gap: 6px; padding: 7px 14px; }
+}
+@media (max-width: 1180px) {
+  html, body { height: auto; overflow-y: auto; overflow-x: hidden; }
+  .app { height: auto; overflow: visible; }
+  .bar { height: auto; flex-wrap: wrap; padding: 8px 12px; gap: 7px; position: sticky; top: 0; }
+  .deck {
+    grid-template-columns: 1fr 1fr;
+    overflow: visible;
+    padding: 10px;
+  }
+  .col:nth-child(3) { grid-column: 1 / -1; }
+  .map-stage { min-height: 360px; }
+  .car3d-stage { min-height: 260px; }
+  .convo { max-height: 280px; }
+  .tools { max-height: 220px; }
+}
+
+@media (max-width: 760px) {
+  .bar { position: static; padding: 8px 10px; gap: 6px; }
+  .brand-block { border-right: 0; padding-right: 0; width: 100%; justify-content: space-between; }
+  .brand-title h1 { font-size: 13.5px; letter-spacing: 0.11em; }
+  .chips { width: 100%; flex-wrap: wrap; gap: 5px; }
+  .chip { height: 26px; padding: 0 7px; font-size: 10px; }
+  .spacer { display: none; }
+  .bar-controls { width: 100%; flex-wrap: wrap; gap: 5px; }
+  .toggle { flex: 1; justify-content: center; height: 34px; padding: 0 8px; }
+  .toggle .lbl-long { display: none; }
+  .voice-pick { flex: 1 1 100%; height: 34px; }
+  .voice-pick select { flex: 1; max-width: none; height: 28px; }
+  #t-mic { min-width: 0; justify-content: center; }
+
+  .estop {
+    position: fixed;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    z-index: 35;
+    height: 48px;
+    padding: 0 18px;
+    font-size: 13px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65);
+  }
+  .estop kbd { display: none; }
+
+  .deck {
+    grid-template-columns: 1fr;
+    padding: 8px 8px 76px;
+    gap: 10px;
+  }
+  .cam { max-height: none; aspect-ratio: 4 / 3; }
+  .controls {
+    grid-template-columns: auto auto;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .controls .side { grid-column: 1 / -1; }
+  .pad {
+    grid-template-columns: repeat(3, 46px);
+    grid-template-rows: repeat(2, 46px);
+    gap: 5px;
+  }
+  .key { font-size: 14px; }
+  .key small { display: none; }
+
+  .sensor-grid { grid-template-rows: auto auto; }
+  .sensor-top { grid-template-columns: 1fr; }
+  .radar { max-height: 190px; }
+  .floor-bars { min-height: 82px; }
+
+  .panel-hd { flex-wrap: wrap; gap: 5px; }
+  .map-stage { height: 340px; min-height: 340px; }
+  .map-prompt { font-size: 10px; padding: 6px 10px; white-space: normal; text-align: center; max-width: 90%; top: 34px; }
+  .map-legend { gap: 7px; font-size: 8.5px; padding: 2px 6px; }
+  .map-readouts { grid-template-columns: repeat(2, 1fr); }
+  .map-readouts .datum:last-child { grid-column: 1 / -1; }
+  .car3d-stage { height: 250px; min-height: 250px; }
+  .car3d-pill { font-size: 9.5px; gap: 6px; flex-wrap: wrap; }
+  .convo { min-height: 150px; max-height: 250px; }
+  .tools { max-height: 210px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

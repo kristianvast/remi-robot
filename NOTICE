@@ -1,0 +1,26 @@
+remi-robot
+Copyright 2026 Kristian Vastveit
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE),
+except for the third-party components listed below, which remain under their
+own copyright and licence terms.
+
+- car/*.cpp, car/*.h, car/*.ino (Arduino firmware base)
+  Copyright ELEGOO Inc. - from the ELEGOO Smart Robot Car Kit V4.0 sources,
+  modified for this project.
+- car/ArduinoJson-v6.11.1.h
+  ArduinoJson, Copyright Benoit Blanchon - MIT License.
+- car/esp32s3-camera-wifi/
+  Based on ELEGOO's ESP32-S3 camera firmware and the Espressif
+  CameraWebServer example (Apache-2.0).
+- sim/models/navdp*/xnavdp/ and the NavDP weights
+  X-NavDP, Copyright Tianyu Yang and X-NavDP contributors - MIT License
+  (sim/models/navdp*/weights/LICENSE-MIT-X-NavDP.txt).
+  DINOv2 / Depth Anything V2 components - Apache-2.0
+  (sim/models/navdp*/weights/LICENSE-Apache-2.0-DINOv2-DepthAnythingV2.txt).
+- sim/models/combined*/ encoder weights
+  Depth Anything V2 Metric-Indoor-Small - Apache-2.0
+  (sim/models/combined*/weights/LICENSE.md).
+- YOLOX-Nano person detector (downloaded at setup, not bundled) - Apache-2.0.
+- Apple Depth Pro 2-S (optional dependency, not bundled) - Apple research
+  licence; check its terms before any non-research use.

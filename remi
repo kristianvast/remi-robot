@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Start Remi. Run from anywhere:  ./remi help
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BRAIN="$ROOT/car/tools/brain"
+PY="$BRAIN/.venv/bin/python"
+export SSL_CERT_FILE="$BRAIN/.venv/lib/python3.12/site-packages/certifi/cacert.pem"
+export DASHBOARD_PORT="${DASHBOARD_PORT:-8765}"
+URL="http://localhost:$DASHBOARD_PORT"
+
+usage() {
+  cat <<EOF
+Remi commands (dashboard opens at $URL):
+  ./remi              talk to Remi on the real car (mic + speakers)
+  ./remi text         type to Remi on the real car
+  ./remi fake         talk to Remi on the simulated car (no hardware)
+  ./remi fake text    type to Remi on the simulated car
+  ./remi memory       show who and what Remi remembers
+Set REMI_NO_OPEN=1 to skip opening the browser.
+EOF
+}
+
+open_dashboard() {
+  [ "${REMI_NO_OPEN:-0}" = 1 ] && return
+  ( for _ in $(seq 1 60); do
+      curl -s -o /dev/null "$URL" && { open "$URL"; exit 0; }
+      sleep 1
+    done ) &
+}
+
+run_agent() {
+  cd "$BRAIN"
+  open_dashboard
+  echo "Remi starting - dashboard: $URL"
+  "$PY" agent.py console "$@"
+}
+
+case "${1:-}" in
+  ""|voice) run_agent ;;
+  text) run_agent --text ;;
+  fake)
+    cd "$BRAIN"
+    "$PY" fake_car.py --port 18100 --camera-port 18101 >/dev/null 2>&1 &
+    FAKE=$!
+    trap 'kill $FAKE 2>/dev/null' EXIT
+    export CAR_HOST=127.0.0.1 CAR_PORT=18100 \
+      CAR_CAMERA_URL=http://127.0.0.1:18101/capture CAR_STREAM_URL=http://127.0.0.1:18101/stream
+    if [ "${2:-}" = text ]; then run_agent --text; else run_agent; fi
+    ;;
+  memory)
+    f="$BRAIN/remi_memory/memory.json"
+    if [ -f "$f" ]; then "$PY" -c "import sys; sys.path.insert(0, '$BRAIN'); from memory import Memory; print(Memory().digest())"
+    else echo "Remi doesn't remember anything yet."; fi
+    ;;
+  help|-h|--help) usage ;;
+  *) usage; exit 1 ;;
+esac

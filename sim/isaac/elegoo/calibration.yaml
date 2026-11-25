@@ -1,0 +1,62 @@
+measured:
+  date: '2026-11-24'
+  surface: carpet
+  mass_kg: 0.77
+  body_m: [0.23, 0.14, 0.14]
+  wheel_diameter_m: 0.0666
+  track_m: 0.116
+  wheelbase_m: 0.0818
+  pwm_limit: 255
+  straight_short_run_cm_s: {80: 27, 110: 39}
+  straight_extrapolated_cm_s: {150: 55}
+  spin_deg_s: {80: 130, 95: 150, 110: 200}
+  coast_deg: {80: 16, 95: 23, 110: 31}
+  command_rate_hz: 14
+  link_round_trip_s: 0.07
+  watchdog_s: 0.4
+  heading_hold_abs_max_deg: 1.5
+  gyro_rate_limit_deg_s: 250
+  gyro_saturation_pwm_band: [130, 160]
+  camera_size_px: [640, 480]
+  camera_height_m: 0.126
+  camera_forward_m: 0.08
+  camera_pitch_estimate_deg: 20
+  camera_hfov_estimate_deg: 65
+  ultrasonic_cone_full_estimate_deg: 30
+  ultrasonic_cap_cm: 150
+  floor_sensor_count: 3
+
+# Each entry is [nominal, randomization low, randomization high].
+# Ranges are priors, not confidence intervals. Coast fit assumes 70 ms command-to-stop latency.
+parameters:
+  speed_scale: [1.0, 0.85, 1.15]
+  turn_scale: [1.0, 0.8, 1.2]
+  speed_m_s_per_pwm: [0.004, 0.0036, 0.0044]
+  deadband_pwm: [12.5, 9, 17]
+  speed_lag_s: [0.09, 0.06, 0.13]
+  yaw_accel_lag_s: [0.09, 0.06, 0.14]
+  coast_lag_scale: [1.0, 0.8, 1.2]
+  command_period_s: [0.0714285714, 0.06, 0.09]
+  command_delay_s: [0.07, 0.035, 0.09]
+  watchdog_s: [0.4, 0.38, 0.42]
+  straight_yaw_bias_deg_s: [2.5, -4, 4]
+  gyro_rate_limit_deg_s: [250, 245, 255]
+  gyro_bias_deg_s: [0.05, -0.3, 0.3]
+  gyro_noise_deg_s: [0.05, 0.0, 0.20]
+  camera_pitch_deg: [20, 17, 23]
+  camera_hfov_deg: [65, 60, 70]
+  camera_height_m: [0.126, 0.121, 0.131]
+  camera_forward_m: [0.0825, 0.078, 0.086]
+  ultrasonic_full_cone_deg: [30, 25, 35]
+  ultrasonic_range_noise_cm: [0.3, 0.0, 1.0]
+  ultrasonic_cap_cm: [150, 150, 150]
+  floor_threshold_m: [0.012, 0.008, 0.016]
+  floor_noise_m: [0.0003, 0.0, 0.001]
+
+curves:
+  # Spin curve knots are effective differential PWM (right-left)/2.
+  spin_pwm: [0, 12.5, 80, 95, 110, 145, 255]
+  spin_deg_s: [0, 0, 130, 150, 200, 265, 350]
+  # Euler-exact, discrete-time corrections may be needed after measuring in PhysX.
+  coast_pwm: [0, 80, 95, 110, 255]
+  coast_lag_s: [0.053, 0.053, 0.083, 0.085, 0.085]

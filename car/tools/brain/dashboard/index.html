@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>REMI // ROBOT CAR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/css/topbar.css">
+<link rel="stylesheet" href="/static/css/deck.css">
+<link rel="stylesheet" href="/static/css/camera.css">
+<link rel="stylesheet" href="/static/css/sensors.css">
+<link rel="stylesheet" href="/static/css/map.css">
+<link rel="stylesheet" href="/static/css/comms.css">
+<link rel="stylesheet" href="/static/css/responsive.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></symbol>
+  <symbol id="i-octagon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/><line x1="8" y1="12" x2="16" y2="12"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+  <symbol id="i-loader" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20 12 12"/><path d="M12 4a8 8 0 0 1 8 8"/><path d="M12 8a4 4 0 0 1 4 4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></symbol>
+</svg>
+
+<div class="app">
+  <header class="bar">
+    <div class="brand-block">
+      <div class="brand-title">
+        <span class="brand-mark"><svg width="15" height="15"><use href="#i-car"/></svg></span>
+        <h1>REMI <span class="slash">//</span> ROBOT CAR</h1>
+      </div>
+      <span class="clock num" id="hud-clock">--:--:--</span> </div>
+
+    <div class="chips">
+      <span class="chip" id="chip-link"><span class="dot" id="link-dot"></span>LINK <b id="link-txt">connecting</b></span>
+      <span class="chip"><span class="dot" id="agent-dot"></span>REMI <b id="agent-txt">starting</b></span>
+      <span class="chip"><span class="dot" id="cam-dot"></span>CAM <b id="cam-txt">waiting</b></span>
+      <span class="chip mem" title="Remi long-term memory records"><span class="mem-tag">MEMORY CORE</span> <b id="mem-txt">0P · 0E</b></span> </div>
+
+    <span class="spacer"></span>
+
+    <div class="bar-controls">
+      <button class="toggle" id="t-auto" role="switch" aria-checked="true" title="Let Remi drive the wheels"><span class="sw"></span><span>Remi drives</span></button>
+      <button class="toggle" id="t-initiative" role="switch" aria-checked="false" title="Allow greetings and scheduled patrols without a request"><span class="sw"></span><span>Initiative</span></button>
+      <label class="voice-pick" title="Remi's Google voice (Gemini Live)"><span>Voice</span><select id="voice" aria-label="Remi's voice" disabled></select></label>
+      <button class="toggle" id="t-mic" role="switch" aria-checked="true" title="Mute or unmute the Mac microphone (M)"><span class="sw"></span><span id="t-mic-lbl">Mic on</span><kbd class="lbl-long">M</kbd></button>
+      <button class="estop" id="estop" title="Stop the car and Remi (Space)"><svg width="14" height="14"><use href="#i-octagon"/></svg>STOP <kbd>Space</kbd></button>
+    </div> </header>
+
+  <div class="offline-banner" id="pane-off">
+    <svg width="14" height="14"><use href="#i-alert"/></svg>
+    <span>Lost connection to Remi. Reconnecting...</span> </div>
+
+  <main class="deck">
+    <section class="col">
+      <div class="panel cam-panel">
+        <div class="panel-hd">
+          <h2><span class="tag-code">01</span> Optical Feed</h2>
+          <span class="right">
+            <span class="seg" role="group" aria-label="Camera source">
+              <button id="src-live" aria-pressed="true">Live stream</button>
+              <button id="src-agent" aria-pressed="false">Remi's view</button>
+            </span> </span>
+        </div>
+
+        <div class="cam" id="cam">
+          <div class="empty" id="cam-empty">Awaiting optical telemetry</div>
+          <img id="cam-img" alt="Live view from Remi's camera" hidden>
+          <div class="hud">
+            <svg viewBox="0 0 400 300" preserveAspectRatio="none" id="hud-svg"></svg>
+            <span class="tag" id="hud-who" hidden></span>
+            <div class="readout" id="hud-read"><span class="v num" id="hud-dist">--</span><span class="l">SONAR RANGE</span></div>
+            <div class="toasts" id="toasts" aria-live="polite"></div> </div>
+        </div>
+
+        <div class="controls">
+          <div>
+            <div class="padlabel">Drive</div>
+            <div class="pad">
+              <span></span>
+              <button class="key" data-key="w" aria-label="Drive forward (W)">W<small>fwd</small></button>
+              <span></span>
+              <button class="key" data-key="a" aria-label="Spin left (A)">A<small>left</small></button>
+              <button class="key" data-key="s" aria-label="Back up (S)">S<small>back</small></button>
+              <button class="key" data-key="d" aria-label="Spin right (D)">D<small>right</small></button>
+            </div> </div>
+          <div>
+            <div class="padlabel">Camera Head</div>
+            <div class="pad">
+              <span></span>
+              <button class="key" data-key="ArrowUp" aria-label="Center head (Up arrow)"><svg width="16" height="16"><use href="#i-target"/></svg><small>ctr</small></button>
+              <span></span>
+              <button class="key" data-key="ArrowLeft" aria-label="Pan head left (Left arrow)"><svg width="16" height="16" style="transform:rotate(-90deg)"><use href="#i-arrow"/></svg></button>
+              <button class="key" data-key="ArrowDown" aria-label="Scan surroundings (Down arrow)"><svg width="16" height="16"><use href="#i-scan"/></svg><small>scan</small></button>
+              <button class="key" data-key="ArrowRight" aria-label="Pan head right (Right arrow)"><svg width="16" height="16" style="transform:rotate(90deg)"><use href="#i-arrow"/></svg></button>
+            </div> </div>
+          <div class="side">
+            <label class="speed">PWM <input type="range" id="speed" min="80" max="255" step="5" value="150"><span class="num" id="speed-v">150</span></label>
+            <div class="who" id="who">Standby // no driver</div>
+            <div class="who who-hint">Hold WASD / Arrows. Release stops; manual input pauses Remi.</div> </div>
+        </div> </div>
+
+      <div class="panel sensors-panel">
+        <div class="panel-hd">
+          <h2><span class="tag-code">02</span> Sensor Array</h2>
+          <span class="right num">STOP <span id="stop-ring-lbl">15</span> CM</span> </div>
+
+        <div class="sensor-grid">
+          <div class="sensor-top">
+            <div class="sub-box">
+              <div class="sub-hd">
+                <span class="lbl">Sonar Sweep</span>
+                <span class="val" id="m-dist">--</span> </div>
+              <div class="radar-wrap">
+                <svg class="radar" id="radar" viewBox="-170 -174 340 202" role="img" aria-label="Top view of Remi with sonar readings"></svg> </div>
+              <div class="radar-foot">
+                <span>HDG <b id="m-head">--</b></span>
+                <span>RTT <b id="m-rtt">--</b></span> </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-hd">
+                <span class="lbl">Floor IR</span>
+                <span class="val" id="f-thr-lbl">THR --</span> </div>
+              <div class="floor-wrap">
+                <div class="floor-bars">
+                  <div class="bar-col"><div class="meter"><div class="fill" id="f-l"></div><div class="thr"></div></div><span class="l num" id="f-lv">L --</span></div>
+                  <div class="bar-col"><div class="meter"><div class="fill" id="f-m"></div><div class="thr"></div></div><span class="l num" id="f-mv">M --</span></div>
+                  <div class="bar-col"><div class="meter"><div class="fill" id="f-r"></div><div class="thr"></div></div><span class="l num" id="f-rv">R --</span></div>
+                </div>
+                <div class="floor-status">
+                  <span class="lbl">Surface</span>
+                  <span class="v" id="f-state">--</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sub-box profile-wrap">
+            <div class="sub-hd">
+              <span class="lbl">Elevation Profile // Height x2</span>
+              <span class="lbl">Sonar + Cam</span>
+            </div>
+            <svg class="profile-svg" id="profile" viewBox="-14 -48 114 53" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Side view of sonar beam and camera coverage"></svg>
+            <p class="blind-note" id="blind-note"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="col">
+      <div class="panel map-panel">
+        <div class="panel-hd">
+          <h2><span class="tag-code">03</span> Tactical Floor Map</h2>
+          <span class="right map-actions">
+            <button class="hud-btn primary" id="btn-set-start" title="Place Remi on the map (click position, drag for heading)">
+              <svg width="12" height="12"><use href="#i-pin"/></svg><span id="btn-set-start-lbl">SET START</span>
+            </button>
+            <button class="hud-btn on" id="btn-follow" aria-pressed="true" title="Keep map centered on Remi">
+              <svg width="12" height="12"><use href="#i-lock"/></svg>FOLLOW
+            </button>
+            <button class="hud-btn icon" id="btn-zoom-in" aria-label="Zoom in" title="Zoom in">+</button>
+            <button class="hud-btn icon" id="btn-zoom-out" aria-label="Zoom out" title="Zoom out">-</button>
+            <button class="hud-btn" id="btn-fit" title="Fit building map">FIT</button>
+          </span>
+        </div>
+
+        <div class="map-stage" id="map-stage">
+          <canvas id="map-canvas"></canvas>
+          <button class="map-prompt" id="map-prompt" hidden>
+            <svg width="13" height="13"><use href="#i-pin"/></svg>
+            <span>Click where Remi is on the map</span>
+          </button>
+          <div class="map-mode-banner" id="map-mode-banner" hidden>SET START ACTIVE // CLICK TO PLACE · DRAG TO AIM · ESC CANCEL</div>
+          <div class="map-legend">
+            <span><i style="background:#26e8ff"></i>Wall</span>
+            <span><i style="background:#13546d"></i>Free</span>
+            <span><i style="background:#20e8a0"></i>Home</span>
+            <span><i style="background:#ffb838"></i>Drift</span>
+          </div>
+          <div class="map-source-tag" id="map-source">POSE: UNPLACED</div>
+        </div>
+
+        <div class="map-readouts">
+          <div class="datum"><span class="lbl">Room</span><span class="val hi" id="p-room">UNPLACED</span></div>
+          <div class="datum"><span class="lbl">Position (m)</span><span class="val" id="p-xy">-- , --</span></div>
+          <div class="datum"><span class="lbl">Heading</span><span class="val" id="p-hdg">--</span></div>
+          <div class="datum"><span class="lbl">Home Vector</span><span class="val" id="p-home">--</span></div>
+          <div class="datum"><span class="lbl">Odometry</span><span class="val" id="p-dist">--</span></div>
+        </div>
+      </div>
+
+      <div class="panel car3d-panel">
+        <div class="panel-hd">
+          <h2><span class="tag-code">04</span> 3D Holographic Twin</h2>
+          <span class="right num" id="car3d-status">LOADING MODEL...</span>
+        </div>
+
+        <div class="car3d-stage" id="car3d-stage">
+          <canvas id="car3d-canvas"></canvas>
+          <div class="car3d-fallback" id="car3d-fallback" hidden></div>
+          <div class="car3d-hud">
+            <div class="car3d-row">
+              <div class="car3d-pill">
+                <span>CHASSIS<b>ELEGOO V4</b></span>
+                <span>HEAD<b id="c3-head">0° CTR</b></span>
+              </div>
+              <div class="car3d-pill">
+                <span>SONAR<b id="c3-sonar">--</b></span>
+                <span>VEL<b id="c3-vel">0.0 cm/s</b></span>
+              </div>
+            </div>
+            <div class="car3d-row">
+              <div class="car3d-pill">
+                <span>DRIVE<b id="c3-dir">IDLE</b></span>
+              </div>
+              <div class="car3d-pill">
+                <span>ORBIT<b>DRAG TO INSPECT</b></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="col">
+      <div class="panel convo-panel">
+        <div class="panel-hd">
+          <h2><span class="tag-code">05</span> Comms // Remi</h2>
+          <span class="right" id="agent-sub"></span>
+        </div>
+        <div class="convo" id="convo"><p class="empty-note">Awaiting voice or text channel.</p></div>
+        <form class="say" id="say">
+          <input id="say-in" placeholder="Tell Remi something" autocomplete="off" aria-label="Message to Remi">
+          <button class="send" id="say-btn" aria-label="Send to Remi" disabled><svg width="15" height="15"><use href="#i-send"/></svg></button>
+        </form>
+      </div>
+
+      <div class="panel tools-panel">
+        <div class="panel-hd">
+          <h2><span class="tag-code">06</span> Remi Actions</h2>
+          <span class="right num" id="tools-count">0 OPS</span>
+        </div>
+        <ul class="tools" id="tools"><li class="empty-note">Tool telemetry appears here.</li></ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script type="module" src="/static/js/main.js"></script>
+</body>
+</html>

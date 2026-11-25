@@ -1,0 +1,101 @@
+# Named places for the navigator. ALL NAMES ARE PROVISIONAL: the owner will rename them.
+# Names were guessed from floor colour and contents in the scan views (scans/merged/views/)
+# and the merged top-down plan. Goal points are the 36 goals of sim/isaac/scene/scene_meta.yaml,
+# grouped by area (scans/merged/rooms_next.json). Coordinates: floor-map / stage metres.
+#
+# The area name alone ("kitchen") goes to the area's `default` goal; "kitchen 2" etc. to the others.
+provisional: true
+areas:
+  area_01:
+    name: kitchen
+    evidence: white panelled cabinets along the walls, warm-brown floor (views area_01_1..4)
+    default: 1
+    goals:
+      1: {x: -6.49, y: 7.41}
+      2: {x: -10.25, y: 7.45}
+      3: {x: -8.39, y: 10.05}
+  area_02:
+    name: dining room
+    evidence: large green-carpet room with many chairs around tables (area_02_1, area_02_4)
+    default: 6
+    goals:
+      1: {x: -4.61, y: 4.95}
+      2: {x: 3.13, y: 3.57}
+      3: {x: -1.13, y: 0.09}
+      4: {x: -0.39, y: 6.25}
+      5: {x: -3.99, y: 8.79}
+      6: {x: -2.11, y: 3.07}
+  area_03:
+    name: office
+    evidence: small red-carpet room with white doors, desks and cupboards (area_03_1, area_03_4)
+    default: 3
+    goals:
+      1: {x: 5.23, y: 2.79}
+      2: {x: 8.37, y: -0.03}
+      3: {x: 5.61, y: 0.05}
+  area_04:
+    name: west corridor
+    evidence: grey corridor with blue crates and stacked boxes along white doors (area_04_3, area_04_4)
+    default: 1
+    goals:
+      1: {x: -5.43, y: 1.51}
+      2: {x: -8.27, y: 3.43}
+      3: {x: -7.17, y: 1.99}
+  area_05:
+    name: meeting room
+    evidence: the largest red-carpet room, desks and a table with chairs (area_05_1, area_05_4)
+    # Goals 1, 4 and 5 lie in the east part, which the scanned map connects to the rest only
+    # through a gap narrower than the car (closed by furniture): not reachable in the simulator.
+    default: 3
+    goals:
+      1: {x: 10.79, y: -5.67}
+      2: {x: 2.25, y: 0.83}
+      3: {x: 7.85, y: -0.81}
+      4: {x: 15.59, y: -3.13}
+      5: {x: 11.87, y: -1.87}
+      6: {x: 6.45, y: -4.45}
+  area_06:
+    name: middle corridor
+    evidence: grey corridor with blue crates, a coloured bag and doors on both sides (area_06_2..4)
+    default: 3
+    goals:
+      1: {x: -1.05, y: -1.21}
+      2: {x: -4.09, y: 0.75}
+      3: {x: -2.87, y: -0.71}
+  area_07:
+    name: lounge
+    evidence: armchairs, round tables and patterned round rugs on a wood-coloured floor (area_07_1, 07_3, 07_4)
+    default: 1
+    goals:
+      1: {x: 0.11, y: -6.91}
+      2: {x: 0.01, y: -2.07}
+      3: {x: 4.09, y: -4.55}
+  area_08:
+    name: back hall
+    evidence: white-walled hall with an armchair, sofa and chairs, wood-coloured floor (area_08_1, 08_3)
+    default: 1
+    goals:
+      1: {x: 6.01, y: -8.03}
+      2: {x: 4.11, y: -4.57}
+      3: {x: 2.37, y: -9.19}
+  area_09:
+    name: stair hall
+    evidence: narrow hall with a staircase and a vacuum cleaner (area_09_4)
+    default: 3
+    goals:
+      1: {x: -8.79, y: 6.27}
+      2: {x: -8.37, y: 3.27}
+      3: {x: -8.11, y: 4.83}
+  area_10:
+    name: store room
+    evidence: tiny room (2 m2) with grey cupboards and bags (area_10_3, 10_4)
+    default: 1
+    goals:
+      1: {x: 9.03, y: -8.23}
+      2: {x: 8.57, y: -7.31}
+      3: {x: 9.59, y: -8.07}
+
+# Where go_to assumes the car starts (the owner's fixed home spot). Written by the brain's set_home tool
+# (tools/brain/navigation.py) when the owner says "this is home"; keep this one line last in the file.
+# placeholder: true = not set by the owner yet (a clear spot in the dining room stands in).
+home: {x: 5.67, y: 0.21, yaw: 0.9400, area: area_03, placeholder: false}

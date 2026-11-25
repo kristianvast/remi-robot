@@ -1,0 +1,42 @@
+# Secrets - never commit
+wifi_secrets.h
+.env
+.env.*
+*.pem
+*.key
+
+# Remi's private memory and patrol photos
+remi_memory/
+patrols/
+
+# Python / tooling
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Firmware build output
+build/
+build.log
+*.bin
+*.elf
+*.hex
+
+# Model weights live in GitHub Releases, not git
+sim/models/*/weights/*.pt
+sim/models/*/weights/*.onnx
+sim/realdepth/models/
+
+# Generated data and results
+*.npz
+*.mp4
+*.log
+results/
+plots/
+
+# Site-specific building scans and maps (bring your own)
+scans/
+recon/
+
+.DS_Store

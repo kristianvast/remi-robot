@@ -1,0 +1,15 @@
+pyserial
+esptool
+livekit-agents[google,elevenlabs,silero]~=1.8
+pillow
+onnxruntime>=1.20,<2
+numpy>=1.26,<3
+# go_to (navigation.py imports the project's sim/navigate, sim/localize, sim/macsim): BSD / Apache-2.0 / MIT
+scipy>=1.14
+pyyaml>=6
+opencv-python-headless>=4.10
+embreex==4.4.0.post1
+# Live depth on the Mac (sim/realdepth): Apple Depth Pro 2-S, Apple research-only licence (code: Apple sample
+# licence; weights: research purposes only). Fallback per sim/realdepth/observation_spec.md: Depth Anything V2.
+torch==2.15.0; sys_platform == "darwin"
+depth_pro_2 @ git+https://github.com/apple-aiml-research/ml-depth-pro-2@aa389cbb0b74341664ed663a0966c859905cd6c0 ; sys_platform == "darwin"
