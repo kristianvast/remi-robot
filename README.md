@@ -202,7 +202,8 @@ are still a work in progress. Issues and PRs are welcome.
 
 ## Credits and licence
 
-Built by **[Kristian Vastveit](https://github.com/kristianvast)**. Licensed under the [Apache License 2.0](LICENSE).
+Built by **[Kristian Vastveit](https://github.com/kristianvast)**, with contributions from
+**[David Remenyik](https://github.com/DavidRemenyik)**, who built the ESP32-S3 Wi-Fi camera firmware and the first teleop tools this project grew from. Licensed under the [Apache License 2.0](LICENSE).
 
 It stands on the shoulders of: the ELEGOO Smart Robot Car V4.0 firmware, ArduinoJson,
 Espressif's CameraWebServer, [X-NavDP](https://github.com/InternRobotics/NavDP) (MIT), DINOv2 and
